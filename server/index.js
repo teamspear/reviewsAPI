@@ -8,6 +8,10 @@ let port = process.env.PORT || 8901;
 app.use(bodyParser.json());
 
 
+app.get('/', (req,res) => {
+  res.send('inside docker container');
+})
+
 app.get('/reviews/:product_id/list', (req,res) => {
   db.listAll(req,res);
 });

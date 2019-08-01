@@ -1,0 +1,11 @@
+version: "3"
+services:
+  db:
+    image: "postgres:11"
+    container_name: "my_postgres"
+    ports:
+      - "5321:5321"
+    volumes:
+      - my_dbdata://Users/tom/reviewsAPI/data/characteristic_reviews.csv
+volumes:
+  my_dbdata:
