@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 
 
 app.get('/', (req,res) => {
-  res.send('inside docker container');
+  res.send('maybe it is working');
 })
 
 app.get('/reviews/:product_id/list', (req,res) => {

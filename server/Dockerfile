@@ -1,7 +1,7 @@
-FROM node
+FROM node:10
 WORKDIR /server
 COPY package*.json ./
-COPY . .
 RUN npm install
+COPY . .
 EXPOSE 8901
-CMD ls && node index.js
+CMD ["npm","start"]
