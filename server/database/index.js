@@ -29,15 +29,40 @@ module.exports = {
         // pool.end() when to use pool.end()?
       }
   )},
-  listPhotos : (req, res) => {
+  meta : (req, res) => {
     pool.query(
-      `SELECT * from review_photos where review_photos.review_id = ${req.params.review_id};`,
+      `SELECT rating, COUNT(rating) FROM list_reviews 
+       WHERE product_id = ${req.params.product_id} 
+       GROUP BY rating;`,
       (err, results) => {
         if (err) {
           console.log(err)
         }
         res.send(results.rows);
       }
-    )
+    )},
+  helpful : (req,res) => {
+    pool.query(
+      `UPDATE list_reviews
+       SET helpfulness = helpfulness + 1
+       WHERE id = ${req.params.review_id}`,
+       (err, results) => {
+         if (err) {
+           console.log(err)
+         }
+         res.send('marked as helpful');
+        }
+    )},
+  reported : (req,res) => {
+    pool.query(
+    `UPDATE list_reviews
+       SET reported = NOT reported
+       WHERE id = ${req.params.review_id}`,
+    (err, results) => {
+      if (err) {
+        console.log(err)
+      }
+      res.send('reported')
+    })
   }
 };
