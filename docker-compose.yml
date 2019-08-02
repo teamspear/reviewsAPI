@@ -1,11 +1,28 @@
 version: "3"
 services:
-  db:
+  postgres:
     image: "postgres:11"
-    container_name: "my_postgres"
+    restart : always
+    environment:
+      POSTGRES_DB: 'sdc'
+      POSTGRES_HOST: 'postgres'
+      PGDATA : /tmp
+    container_name: "postgres"
     ports:
       - "5321:5321"
     volumes:
-      - my_dbdata://Users/tom/reviewsAPI/data/characteristic_reviews.csv
-volumes:
-  my_dbdata:
+      - "/Users/tom/reviewsAPI/data/1schema.sql:/docker-entrypoint-initdb.d/schema.sql"
+      - "/Users/tom/reviewsAPI/data/reviews.csv:/var/lib/postgresql/data/csv/reviews.csv"
+      - "/Users/tom/reviewsAPI/data/reviews_photos.csv:/var/lib/postgresql/data/csv/reviews_photots.csv"
+      - "/Users/tom/reviewsAPI/data/characteristic_reviews.csv:/var/lib/postgresql/data/csv/characteristic_reviews.csv"
+      - "/Users/tom/reviewsAPI/data/characteristics.csv:/var/lib/postgresql/data/csv/characteristics.csv"
+  server :
+    build : ./server
+    depends_on : 
+      - postgres
+    restart: always
+    ports :
+      - "8901:8901"
+    volumes :
+      - .:/server
+      - /server/node_modules

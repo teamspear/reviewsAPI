@@ -1,7 +1,7 @@
 FROM node:10
-WORKDIR /server
+WORKDIR .
 COPY package*.json ./
 RUN npm install
 COPY . .
 EXPOSE 8901
-CMD ["npm","start"]
+CMD nodemon index.js

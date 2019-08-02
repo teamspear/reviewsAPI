@@ -1,22 +1,31 @@
 const { Pool } = require("pg");
 
-//change localhost to db container?
-const connectionString = 'postgresql://postgres:5432/sdc'
+// const pool = new Pool({
+//   user : 'postgres',
+//   host : 'postgres',
+//   database: "sdc",
+//   password: 'supersecret',
+//   port: 5321
+// });
+
+const connectionString = 'postgresql://localhost:5432/sdc'
 const pool = new Pool({
   connectionString: connectionString,
 })
 module.exports = {
   listAll: (req, res) => {
     pool.query(
-      `SELECT review_photos.*,list_reviews.* FROM list_reviews 
-       LEFT JOIN review_photos on list_reviews.id = review_photos.review_id 
-       WHERE list_reviews.product_id = ${req.params.product_id};`,
+      `SELECT list_reviews.*, array_agg(review_photos.url) AS photos FROM list_reviews
+       LEFT JOIN review_photos
+       ON review_photos.review_id = list_reviews.id
+       WHERE list_reviews.product_id = ${req.params.product_id} AND list_reviews.reported = false
+       GROUP BY list_reviews.id;`,
       (err, results) => {
         if (err) {
           console.log(err);
         }
         res.send(results.rows);
-        console.log(results.rows);
+        console.log(results.rows)
         // pool.end() when to use pool.end()?
       }
   )},
