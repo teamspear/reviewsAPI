@@ -6,7 +6,7 @@ const pool = new Pool({
 });
 
 
-const listallFormat = (q) => {
+const listallFormat = (q,page) => {
   let results = [];
   for (let i = 0; i < q.length; i++) {
     let result = {
@@ -24,7 +24,7 @@ const listallFormat = (q) => {
   }
   let listAllObj = {
     product : q[0].product_id,
-    page : 0,
+    page : page,
     count : 50,
     results : results
   }
@@ -32,7 +32,6 @@ const listallFormat = (q) => {
 };
 
 const metaFormat = (q,id) => {
-  console.log(q[2].rows);
   let ratings = {};
   q[0].rows.forEach(rating => {
     ratings[rating.rating] = rating.count
@@ -70,15 +69,28 @@ const metaFormat = (q,id) => {
 module.exports = {
   listAll: (req, res) => {
     console.time()
+    let page = req.query.page || 0;
+    let count = req.query.count || 5;
+    let offset = page * count;
+    let sort = req.query.sort || 'list_reviews.id';
+    if (sort === 'newest') {
+      sort = 'list_reviews.date';
+    } else if (sort === 'helpful') {
+      sort = 'list_reviews.helpfulness'
+    } else if (sort === 'relevant') {
+      sort = 'list_reviews.newest DESC, list_reviews.date DESC'
+    }
     pool
       .query(
         `SELECT list_reviews.*, array_agg(review_photos.url) AS photos FROM list_reviews
        LEFT JOIN review_photos
        ON review_photos.review_id = list_reviews.id
-       WHERE list_reviews.product_id = $1 AND list_reviews.reported = false
+       WHERE list_reviews.product_id = ${req.params.product_id} AND list_reviews.reported = false
        GROUP BY list_reviews.id
-       LIMIT 50;`,[req.params.product_id])
-      .then(results => {res.send(listallFormat(results.rows));console.timeEnd()})
+       ORDER BY ${sort} DESC
+       LIMIT ${count}
+       OFFSET ${offset};`)
+      .then(results => {res.send(listallFormat(results.rows,page));console.timeEnd()})
       .catch(err => console.log(err));
   },
   meta: (req, res) => {
@@ -109,7 +121,7 @@ module.exports = {
        SET helpfulness = helpfulness + 1
        WHERE id = $1`,[req.params.review_id]
       )
-      .then(() => res.sendStatus(202))
+      .then(() => res.sendStatus(204))
       .catch(err => console.log(err));
   },
   reported: (req, res) => {
@@ -118,7 +130,14 @@ module.exports = {
       `UPDATE list_reviews
        SET reported = NOT reported
        WHERE id = $1`,[req.params.review_id])
-    .then(()=> res.sendStatu(202))
+    .then(()=> res.sendStatu(204))
+    .catch(err => console.log(err))
+  },
+  addReview: (req,res) => {
+    pool.query(
+
+    )
+    .then(() => res.sendstatus(201))
     .catch(err => console.log(err))
   }
 };

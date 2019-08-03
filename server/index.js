@@ -28,6 +28,10 @@ app.put('/reviews/report/:review_id', (req,res) => {
   db.reported(req,res);
 })
 
+app.post('/reviews/:product_id', (req,res) => {
+  db.addReview(req,res);
+})
+
 app.listen(port, () => {
   console.log(`listening in on ${port}...`)
 });
