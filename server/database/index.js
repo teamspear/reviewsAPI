@@ -55,7 +55,7 @@ const metaFormat = (q,id) => {
     }
   })
 
-
+  
   let meta = {
     product_id : id,
     ratings : ratings,
@@ -65,6 +65,20 @@ const metaFormat = (q,id) => {
   return meta;
 }
 
+const reviewPhotos = (photos, id) => {
+  for (let i = 0; i < photos.length; i++) {
+    pool.query(`INSERT INTO review_photos (review_id,url) VALUES (${id},${photos[i]});`)
+    .catch(err =>console.log(err))
+  }
+}
+
+const characteristicReviews = (char, id) => {
+  for (let key in char) {
+    pool.query(`INSERT INTO characteristic_reviews (characteristic_id,review_id,value)
+                VALUES (${key},${id},${char[key]});`)
+                .catch(err=> console.log(err))
+  }
+}
 
 module.exports = {
   listAll: (req, res) => {
@@ -134,10 +148,20 @@ module.exports = {
     .catch(err => console.log(err))
   },
   addReview: (req,res) => {
-    pool.query(
-
-    )
-    .then(() => res.sendstatus(201))
+    console.time();
+    let reviewIdx ='';
+    let product_id = req.params.product_id;
+    const queryLR = {
+      text :`INSERT INTO list_reviews (product_id,rating,summary,body,recommend,reviewer_name,reviewer_email) 
+             VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`,
+      values: [product_id, req.body.rating, req.body.summary, req.body.body, req.body.recommend, req.body.name, req.body.email]
+    }
+    pool.query(queryLR)
+    .then(result => reviewIdx = result.rows[0].id)
+    .then(() => console.log(reviewIdx))
+    .then(()=> reviewPhotos(req.body.photos,reviewIdx))
+    .then(()=> characteristicReviews(req.body.characteristics,reviewIdx))
+    .then(() => console.timeEnd())
     .catch(err => console.log(err))
   }
 };
