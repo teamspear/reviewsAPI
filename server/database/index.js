@@ -29,8 +29,7 @@ const listallFormat = (q) => {
     results : results
   }
   return listAllObj;
-}
-
+};
 
 
 
