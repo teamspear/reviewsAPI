@@ -9,17 +9,23 @@ const pool = new Pool({
 const listallFormat = (q,page) => {
   let results = [];
   for (let i = 0; i < q.length; i++) {
+    let photos = [];
+    if(q[i].photos[0] !== null) {
+      q[i].photos.map((photo,index)=> {
+        photos.push({id:index+1,url:photo})
+      })
+    }
     let result = {
       review_id : q[i].id,
 
-      rating : q[i].rating,
+      rating : q[i].rating === null ? 0 : q[i].rating,
       summary : q[i].summary,
       recommend : q[i].recommend === true ? 1 : 0,
       response : q[i].response,
       body : q[i].body,
       date : q[i].date,
       reviewer_name : q[i].reviewer_name,
-      photos : q[i].photos
+      photos : photos
     }
     results.push(result);
   }
@@ -59,7 +65,7 @@ const metaFormat = (q,id) => {
   
   let meta = {
     product_id : id,
-    ratings : ratings,
+    ratings : ratings ? 1 : ratings,
     recommended : recommended,
     characteristics : characteristics
   }

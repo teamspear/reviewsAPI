@@ -21,7 +21,6 @@ app.get('/reviews/:product_id/alllist', (req,res) => {
 });
 
 app.get('/reviews/:product_id/list', (req,res) => {
-  console.log(req.query)
   db.listAll(req,res);
 });
 
