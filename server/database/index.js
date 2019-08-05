@@ -11,6 +11,7 @@ const listallFormat = (q,page) => {
   for (let i = 0; i < q.length; i++) {
     let result = {
       review_id : q[i].id,
+
       rating : q[i].rating,
       summary : q[i].summary,
       recommend : q[i].recommend === true ? 1 : 0,
@@ -81,6 +82,27 @@ const characteristicReviews = (char, id) => {
 }
 
 module.exports = {
+  all : (req,res) => {
+    console.time();
+    let page = req.query.page || 0;
+    let count = req.query.count || 5;
+    let offset = page * count;
+    let sort = req.query.sort || 'reviews.id';
+    if (sort === 'newest') {
+      sort = 'reviews.date';
+    } else if (sort === 'helpful') {
+      sort = 'reviews.helpfulness'
+    } else if (sort === 'relevant') {
+      sort = 'reviews.newest DESC, reviews.date DESC'
+    }
+    pool.query(`SELECT * from reviews
+                WHERE product_id = ${req.params.product_id}
+                ORDER BY ${sort} DESC
+                LIMIT ${count}
+                OFFSET ${offset};`)
+                .then(results => {res.send(results.rows); console.timeEnd()})
+                .catch(err=>console.log(err));
+  },
   listAll: (req, res) => {
     console.time()
     let page = req.query.page || 0;

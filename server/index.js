@@ -12,6 +12,10 @@ app.get('/', (req,res) => {
   res.send('maybe it is working');
 })
 
+app.get('/reviews/:product_id/alllist', (req,res) => {
+  db.all(req,res);
+});
+
 app.get('/reviews/:product_id/list', (req,res) => {
   db.listAll(req,res);
 });
