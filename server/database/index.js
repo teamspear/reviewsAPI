@@ -82,8 +82,7 @@ const characteristicReviews = (char, id) => {
 }
 
 module.exports = {
-  all : (req,res) => {
-    console.time();
+  all : (req,res) => {;
     let page = req.query.page || 0;
     let count = req.query.count || 5;
     let offset = page * count;
@@ -100,21 +99,20 @@ module.exports = {
                 ORDER BY ${sort} DESC
                 LIMIT ${count}
                 OFFSET ${offset};`)
-                .then(results => {res.send(results.rows); console.timeEnd()})
+                .then(results => {res.send(results.rows)})
                 .catch(err=>console.log(err));
   },
   listAll: (req, res) => {
-    console.time()
     let page = req.query.page || 0;
     let count = req.query.count || 5;
     let offset = page * count;
     let sort = req.query.sort || 'list_reviews.id';
     if (sort === 'newest') {
-      sort = 'list_reviews.date';
+      sort = 'list_reviews.date DESC';
     } else if (sort === 'helpful') {
-      sort = 'list_reviews.helpfulness'
+      sort = 'list_reviews.helpfulness DESC'
     } else if (sort === 'relevant') {
-      sort = 'list_reviews.newest DESC, list_reviews.date DESC'
+      sort = 'list_reviews.helpfulness DESC, list_reviews.date DESC'
     }
     pool
       .query(
@@ -123,14 +121,13 @@ module.exports = {
        ON review_photos.review_id = list_reviews.id
        WHERE list_reviews.product_id = ${req.params.product_id} AND list_reviews.reported = false
        GROUP BY list_reviews.id
-       ORDER BY ${sort} DESC
+       ORDER BY ${sort}
        LIMIT ${count}
        OFFSET ${offset};`)
-      .then(results => {res.send(listallFormat(results.rows,page));console.timeEnd()})
+      .then(results => {res.send(listallFormat(results.rows,page))})
       .catch(err => console.log(err));
   },
-  meta: (req, res) => {
-    console.time();
+  meta: (req, res) => {;
     Promise.all([
     pool
       .query(
@@ -148,7 +145,7 @@ module.exports = {
        WHERE characteristic_id IN (SELECT id from characteristics where product_id = $1) 
        GROUP BY characteristic_reviews.characteristic_id, characteristics.name;`,[req.params.product_id]
     )
-    ]).then(results => {res.send(metaFormat(results,req.params.product_id));console.timeEnd();})
+    ]).then(results => {res.send(metaFormat(results,req.params.product_id));})
   },
   helpful: (req, res) => {
     pool
@@ -169,8 +166,7 @@ module.exports = {
     .then(()=> res.sendStatu(204))
     .catch(err => console.log(err))
   },
-  addReview: (req,res) => {
-    console.time();
+  addReview: (req,res) => {;
     let reviewIdx ='';
     let product_id = req.params.product_id;
     const queryLR = {
@@ -183,7 +179,6 @@ module.exports = {
     .then(() => console.log(reviewIdx))
     .then(()=> reviewPhotos(req.body.photos,reviewIdx))
     .then(()=> characteristicReviews(req.body.characteristics,reviewIdx))
-    .then(() => console.timeEnd())
     .catch(err => console.log(err))
   }
 };

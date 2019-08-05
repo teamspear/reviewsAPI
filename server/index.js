@@ -1,10 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const db = require('./database/index.js');
 const app = express();
 
 
 let port = process.env.PORT || 8901;
+
+app.use(cors());
+
 app.use(bodyParser.json());
 
 
@@ -17,6 +21,7 @@ app.get('/reviews/:product_id/alllist', (req,res) => {
 });
 
 app.get('/reviews/:product_id/list', (req,res) => {
+  console.log(req.query)
   db.listAll(req,res);
 });
 
