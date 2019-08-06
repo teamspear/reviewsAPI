@@ -1,8 +1,20 @@
 const { Pool } = require("pg");
 
-const connectionString = "postgres://localhost:5432/sdc";
+const {
+  pgUser,
+  pgHost,
+  pgDatabase,
+  pgPassword,
+  pgPort
+} = require('../keys.js')
+
+
 const pool = new Pool({
-  connectionString: connectionString
+  user: pgUser,
+  host: pgHost,
+  database: pgDatabase,
+  password: pgPassword,
+  port: pgPort,
 });
 
 
