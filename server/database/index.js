@@ -1,20 +1,10 @@
 const { Pool } = require("pg");
 
-const {
-  pgUser,
-  pgHost,
-  pgDatabase,
-  pgPassword,
-  pgPort
-} = require('../keys.js')
-
-
 const pool = new Pool({
-  user: pgUser,
-  host: pgHost,
-  database: pgDatabase,
-  password: pgPassword,
-  port: pgPort,
+  user: 'postgres',
+  host: 'postgres',
+  database: 'postgres',
+  port: 5432,
 });
 
 
