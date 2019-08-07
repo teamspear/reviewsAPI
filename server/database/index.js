@@ -163,7 +163,7 @@ module.exports = {
        SET helpfulness = helpfulness + 1
        WHERE id = $1`,[req.params.review_id]
       )
-      .then(() => res.sendStatuss(204))
+      .then(() => res.sendStatus(204))
       .catch(err=> {console.log(err); res.sendStatus(500)});
   },
   reported: (req, res) => {
