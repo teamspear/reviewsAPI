@@ -95,13 +95,13 @@ module.exports = {
     let page = req.query.page || 0;
     let count = req.query.count || 5;
     let offset = page * count;
-    let sort = req.query.sort || 'list_reviews.id';
+    let sort = req.query.sort || 'reviews.id';
     if (sort === 'newest') {
-      sort = 'list_reviews.date DESC';
+      sort = 'reviews.date DESC';
     } else if (sort === 'helpful') {
-      sort = 'list_reviews.helpfulness DESC'
+      sort = 'reviews.helpfulness DESC'
     } else if (sort === 'relevant') {
-      sort = 'list_reviews.helpfulness DESC, list_reviews.date DESC'
+      sort = 'reviews.helpfulness DESC, reviews.date DESC'
     }
     pool.query(`SELECT * from reviews
                 WHERE product_id = ${req.params.product_id}
