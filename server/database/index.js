@@ -188,6 +188,7 @@ module.exports = {
     .then(() => console.log(reviewIdx))
     .then(()=> reviewPhotos(req.body.photos,reviewIdx))
     .then(()=> characteristicReviews(req.body.characteristics,reviewIdx))
+    .then(()=>res.sendStatus(201))
     .catch(err=> {console.log(err); res.sendStatus(500)})
   }
 };
