@@ -11,8 +11,11 @@ app.use(cors());
 app.use(bodyParser.json());
 
 
+
+
+
 app.get('/', (req,res) => {
-  res.send('maybe it is working');
+  res.send('loaderio-fe95a7e3e8ba96761b12a768920cf5a3');
 })
 
 app.get('/reviews/:product_id/alllist', (req,res) => {

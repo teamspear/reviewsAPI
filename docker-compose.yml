@@ -1,32 +1,35 @@
-version: "3"
+version: '3'
 services:
   postgres:
-    image: "postgres:11"
-    restart : always
-    container_name: postgres
+    image: 'postgres:11'
+    restart: always
     environment:
-      POSTGRES_DB: 'sdc'
-      POSTGRES_HOST: 'postgres'
-      POSTGRES_PASSWORD: 'postgres_password'
-      POSTGRES_USER: 'postgres'
-    expose:
-      - "5432"
+    - PGDATA=/tmp
+    - POSTGRES_USERNAME=postgres
+    - POSTGRES_PASSWORD=postgres
+    - POSTGRES_HOST=postgres
+    - POSTGRES_PORT=5432
+    - POSTGRES_DB=postgres
     ports:
-      - "5432:5432"
+    - "5432:5432"
     volumes:
-      - "/Users/tom/reviewsAPI/data/1schema.sql:/docker-entrypoint-initdb.d/schema.sql"
-      - "/Users/tom/reviewsAPI/data/reviews.csv:/var/lib/postgresql/data/csv/reviews.csv"
-      - "/Users/tom/reviewsAPI/data/reviews_photos.csv:/var/lib/postgresql/data/csv/reviews_photots.csv"
-      - "/Users/tom/reviewsAPI/data/characteristic_reviews.csv:/var/lib/postgresql/data/csv/characteristic_reviews.csv"
-      - "/Users/tom/reviewsAPI/data/characteristics.csv:/var/lib/postgresql/data/csv/characteristics.csv"
+      - "/Users/tom/reviewsAPI/data/schema.sql:/docker-entrypoint-initdb.d/schema.sql"
+      - "/Users/tom/reviewsAPI/data:/var/lib/postgresql/data/csv"
   server :
-    build : ./server
-    container_name: node
+    build : 
+      dockerfile : Dockerfile
+      context : ./server
     depends_on : 
       - postgres
     restart: always
     ports :
       - "8901:8901"
+    environment:
+      - PGUSER=postgres
+      - PGHOST=postgres
+      - PGDATABASE=postgres
+      - PGPASSWORD=postgres_password
+      - PGPORT=5432
     volumes :
-      - .:/server
-      - /server/node_modules
+      - ./server:/app
+      - /app/node_modules
