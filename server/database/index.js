@@ -133,7 +133,7 @@ module.exports = {
        ORDER BY ${sort}
        LIMIT ${count}
        OFFSET ${offset};`)
-      .then(results => {res.send(listallFormat(results.rows,page)).sendStatus(200)})
+      .then(results => {res.send(listallFormat(results.rows,page))})
       .catch(err=> {console.log(err); res.sendStatus(500)});
   },
   meta: (req, res) => {;
@@ -154,7 +154,7 @@ module.exports = {
        WHERE characteristic_id IN (SELECT id from characteristics where product_id = $1) 
        GROUP BY characteristic_reviews.characteristic_id, characteristics.name;`,[req.params.product_id]
     )
-    ]).then(results => {res.send(metaFormat(results,req.params.product_id)).sendStatus(200);})
+    ]).then(results => {res.send(metaFormat(results,req.params.product_id));})
   },
   helpful: (req, res) => {
     pool
