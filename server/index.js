@@ -10,10 +10,9 @@ let port = process.env.PORT || 8901;
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use(express.static('/server/loader'))
 
-app.get('/', (req,res) => {
-  res.send('maybe its working');
+app.get('/loaderio-3978280235cda3ace69963a9018df74d/', (req,res) => {
+  res.send('./loader/loaderio-3978280235cda3ace69963a9018df74d.txt');
 })
 
 app.get('/reviews/:product_id/alllist', (req,res) => {
