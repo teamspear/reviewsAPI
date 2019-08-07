@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use(express.static('/server/loader'))
 
 app.get('/loaderio-3978280235cda3ace69963a9018df74d/', (req,res) => {
-  res.sendFile('/Users/tom/reviewsAPI/server/loader/loaderio-3978280235cda3ace69963a9018df74d.txt');
+  res.sendFile('/home/ec2-user/reviewsAPI/server/loader/loaderio-3978280235cda3ace69963a9018df74d.txt');
 })
 
 app.get('/reviews/:product_id/alllist', (req,res) => {
