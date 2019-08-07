@@ -134,7 +134,7 @@ module.exports = {
        LIMIT ${count}
        OFFSET ${offset};`)
       .then(results => {res.send(listallFormat(results.rows,page))})
-      .catch(err => console.log(err));
+      .catch(err=> {console.log(err); res.sendStatus(500)});
   },
   meta: (req, res) => {;
     Promise.all([
@@ -163,8 +163,8 @@ module.exports = {
        SET helpfulness = helpfulness + 1
        WHERE id = $1`,[req.params.review_id]
       )
-      .then(() => res.sendStatus(204))
-      .catch(err => console.log(err));
+      .then(() => res.sendStatuss(204))
+      .catch(err=> {console.log(err); res.sendStatus(500)});
   },
   reported: (req, res) => {
     pool
@@ -172,8 +172,8 @@ module.exports = {
       `UPDATE list_reviews
        SET reported = NOT reported
        WHERE id = $1`,[req.params.review_id])
-    .then(()=> res.sendStatu(204))
-    .catch(err => console.log(err))
+    .then(()=> res.sendStatus(204))
+    .catch(err=> {console.log(err); res.sendStatus(500)})
   },
   addReview: (req,res) => {;
     let reviewIdx ='';
@@ -188,6 +188,6 @@ module.exports = {
     .then(() => console.log(reviewIdx))
     .then(()=> reviewPhotos(req.body.photos,reviewIdx))
     .then(()=> characteristicReviews(req.body.characteristics,reviewIdx))
-    .catch(err => console.log(err))
+    .catch(err=> {console.log(err); res.sendStatus(500)})
   }
 };
