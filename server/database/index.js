@@ -185,7 +185,6 @@ module.exports = {
     }
     pool.query(queryLR)
     .then(result => reviewIdx = result.rows[0].id)
-    .then(() => console.log(reviewIdx))
     .then(()=> reviewPhotos(req.body.photos,reviewIdx))
     .then(()=> characteristicReviews(req.body.characteristics,reviewIdx))
     .then(()=>res.sendStatus(201))
