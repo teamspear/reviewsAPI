@@ -95,20 +95,20 @@ module.exports = {
     let page = req.query.page || 0;
     let count = req.query.count || 5;
     let offset = page * count;
-    let sort = req.query.sort || 'reviews.id';
+    let sort = req.query.sort || 'list_reviews.id';
     if (sort === 'newest') {
-      sort = 'reviews.date';
+      sort = 'list_reviews.date DESC';
     } else if (sort === 'helpful') {
-      sort = 'reviews.helpfulness'
+      sort = 'list_reviews.helpfulness DESC'
     } else if (sort === 'relevant') {
-      sort = 'reviews.newest DESC, reviews.date DESC'
+      sort = 'list_reviews.helpfulness DESC, list_reviews.date DESC'
     }
     pool.query(`SELECT * from reviews
                 WHERE product_id = ${req.params.product_id}
-                ORDER BY ${sort} DESC
+                ORDER BY ${sort}
                 LIMIT ${count}
                 OFFSET ${offset};`)
-                .then(results => {res.send(listallFormat(results.rows,page)).sendStatus(200)})
+                .then(results => {res.send(listallFormat(results.rows,page))})
                 .catch(err=>console.log(err));
   },
   listAll: (req, res) => {
