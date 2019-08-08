@@ -99,9 +99,8 @@ module.exports = {
   all : (req,res) => {
     client.get('all'+req.params.product_id,(err, reply)=> {
       if(reply) {
-        console.log(JSON.stringify(reply));
-      }
-    })
+        res.end(JSON.stringify(reply));
+      } else {
     let page = req.query.page || 0;
     let count = req.query.count || 5;
     let offset = page * count;
@@ -122,7 +121,7 @@ module.exports = {
                   client.set('all'+req.params.product_id, JSON.stringify(listallFormat(results.rows,page)), 'EX', 60);
                   res.send(listallFormat(results.rows,page))})
                 .catch(err=>console.log(err));
-  },
+  }})},
   listAll: (req, res) => {
     let page = req.query.page || 0;
     let count = req.query.count || 5;
