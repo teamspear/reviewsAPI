@@ -98,7 +98,9 @@ const characteristicReviews = (char, id) => {
 module.exports = {
   all : (req,res) => {
     client.get('all'+req.params.product_id,(err, reply)=> {
-      console.log(reply.toString());
+      if(reply) {
+        console.log(reply.toString());
+      }
     })
     let page = req.query.page || 0;
     let count = req.query.count || 5;
