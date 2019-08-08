@@ -119,7 +119,7 @@ module.exports = {
                 LIMIT ${count}
                 OFFSET ${offset};`)
                 .then(results => {
-                  client.set('all'+req.params.product_id, listallFormat(results.rows,page), 'EX', 60);
+                  client.set('all'+req.params.product_id, 'listallFormat(results.rows,page)', 'EX', 60);
                   res.send(listallFormat(results.rows,page))})
                 .catch(err=>console.log(err));
   },
