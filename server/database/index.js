@@ -122,32 +122,28 @@ module.exports = {
                   res.send(listallFormat(results.rows,page))})
                 .catch(err=>console.log(err));
   }})},
-  listAll: (req, res) => {
+  allNOREDIS : (req,res) => {
     let page = req.query.page || 0;
     let count = req.query.count || 5;
     let offset = page * count;
-    let sort = req.query.sort || 'list_reviews.id';
+    let sort = req.query.sort || 'reviews.id';
     if (sort === 'newest') {
-      sort = 'list_reviews.date DESC';
+      sort = 'reviews.date DESC';
     } else if (sort === 'helpful') {
-      sort = 'list_reviews.helpfulness DESC'
+      sort = 'reviews.helpfulness DESC'
     } else if (sort === 'relevant') {
-      sort = 'list_reviews.helpfulness DESC, list_reviews.date DESC'
+      sort = 'reviews.helpfulness DESC, reviews.date DESC'
     }
-    pool
-      .query(
-        `SELECT list_reviews.*, array_agg(review_photos.url) AS photos FROM list_reviews
-       LEFT JOIN review_photos
-       ON review_photos.review_id = list_reviews.id
-       WHERE list_reviews.product_id = ${req.params.product_id} AND list_reviews.reported = false
-       GROUP BY list_reviews.id
-       ORDER BY ${sort}
-       LIMIT ${count}
-       OFFSET ${offset};`)
-      .then(results => {res.send(listallFormat(results.rows,page))})
-      .catch(err=> {console.log(err); res.sendStatus(500)});
+    pool.query(`SELECT * from reviews
+                WHERE product_id = ${req.params.product_id}
+                ORDER BY ${sort}
+                LIMIT ${count}
+                OFFSET ${offset};`)
+                .then(results => {
+                  res.send(listallFormat(results.rows,page))})
+                .catch(err=>console.log(err));
   },
-  meta: (req, res) => {;
+  meta: (req, res) => {
     Promise.all([
     pool
       .query(

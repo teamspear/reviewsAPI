@@ -20,6 +20,10 @@ app.get('/reviews/:product_id/list', (req,res) => {
   db.all(req,res);
 });
 
+app.get('/reviews/:product_id/listNOREDIS', (req,res) => {
+  db.allNOREDIS(req,res);
+});
+
 app.get('/reviews/:product_id/meta', (req,res) => {
   db.meta(req,res);
 });
