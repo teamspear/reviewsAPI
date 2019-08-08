@@ -144,6 +144,10 @@ module.exports = {
                 .catch(err=>console.log(err));
   },
   meta: (req, res) => {
+    client.get('meta'+req.params.product_id,(err, reply)=> {
+      if(reply) {
+        res.send(JSON.parse(reply));
+      } else {
     Promise.all([
     pool
       .query(
@@ -161,8 +165,10 @@ module.exports = {
        WHERE characteristic_id IN (SELECT id from characteristics where product_id = $1) 
        GROUP BY characteristic_reviews.characteristic_id, characteristics.name;`,[req.params.product_id]
     )
-    ]).then(results => {res.send(metaFormat(results,req.params.product_id));})
-  },
+    ]).then(results => {
+      client.set('meta'+req.params.product_id, JSON.stringify(metaFormat(results,req.params.product_id)), 'EX', 60);
+      res.send(metaFormat(results,req.params.product_id));})
+  }})},
   helpful: (req, res) => {
     pool
       .query(
