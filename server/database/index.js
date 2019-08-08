@@ -1,3 +1,7 @@
+var redis = require('redis');
+bluebird.promisifyAll(redis.RedisClient.prototype);
+bluebird.promisifyAll(redis.Multi.prototype);
+
 const { Pool } = require("pg");
 
 const pool = new Pool({
@@ -91,7 +95,11 @@ const characteristicReviews = (char, id) => {
 }
 
 module.exports = {
-  all : (req,res) => {;
+  all : (req,res) => {
+    client.get('all'+req.params.product_id,(err, reply)=> {
+      if(err) {console.log('**********************')}
+      console.log(reply);
+    })
     let page = req.query.page || 0;
     let count = req.query.count || 5;
     let offset = page * count;
@@ -108,7 +116,9 @@ module.exports = {
                 ORDER BY ${sort}
                 LIMIT ${count}
                 OFFSET ${offset};`)
-                .then(results => {res.send(listallFormat(results.rows,page))})
+                .then(results => {
+                  client.set('all'+req.params.product_id, listallFormat(results.rows,page), 'EX', 60);
+                  res.send(listallFormat(results.rows,page))})
                 .catch(err=>console.log(err));
   },
   listAll: (req, res) => {

@@ -2,9 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const db = require('./database/index.js');
-const app = express();
-
-
 let port = process.env.PORT || 8901;
 
 app.use(cors());
@@ -16,14 +13,9 @@ app.get('/loaderio-3978280235cda3ace69963a9018df74d/', (req,res) => {
   res.sendFile(__dirname+'/loader/loaderio-3978280235cda3ace69963a9018df74d.txt');
 })
 
-//does not use a join on this end point
 app.get('/reviews/:product_id/list', (req,res) => {
   db.all(req,res);
 });
-
-// app.get('/reviews/:product_id/list', (req,res) => {
-//   db.listAll(req,res);
-// });
 
 app.get('/reviews/:product_id/meta', (req,res) => {
   db.meta(req,res);
