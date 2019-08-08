@@ -99,7 +99,7 @@ module.exports = {
   all : (req,res) => {
     client.get('all'+req.params.product_id,(err, reply)=> {
       if(reply) {
-        res.end(JSON.stringify(reply));
+        res.send(reply);
       } else {
     let page = req.query.page || 0;
     let count = req.query.count || 5;
