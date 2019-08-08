@@ -12,8 +12,8 @@ app.use(bodyParser.json());
 
 app.use(express.static('/server/loader'))
 
-app.get('/loaderio-3978280235cda3ace69963a9018df74d/', (req,res) => {
-  res.sendFile(__dirname+'/loader/loaderio-3978280235cda3ace69963a9018df74d.txt');
+app.get('/loaderio-05b219063ac478ba8c0227d17eb515ce/', (req,res) => {
+  res.sendFile(__dirname+'/loader/loaderio-05b219063ac478ba8c0227d17eb515ce.txt');
 })
 
 app.get('/reviews/:product_id/list', (req,res) => {
