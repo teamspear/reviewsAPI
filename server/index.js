@@ -1,4 +1,5 @@
 const express = require('express');
+const redis = require('redis')
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const db = require('./database/index.js');
@@ -6,6 +7,13 @@ const app = express();
 
 
 let port = process.env.PORT || 8901;
+
+let client = redis.createClient();
+
+client.on('connect', ()=> {
+  console.log('connected to Redis')
+})
+
 
 app.use(cors());
 app.use(bodyParser.json());
