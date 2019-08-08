@@ -2,6 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const db = require('./database/index.js');
+
+const app = express();
+
 let port = process.env.PORT || 8901;
 
 app.use(cors());
