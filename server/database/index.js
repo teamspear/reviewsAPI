@@ -6,7 +6,6 @@ var client = redis.createClient();
 const { Pool } = require("pg");
 
 const pool = new Pool({
-  host: 'postgres',
   user: 'tom',
   password:'password',
   database: 'postgres',
