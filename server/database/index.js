@@ -38,7 +38,7 @@ const listallFormat = (q,page) => {
     results.push(result);
   }
   let listAllObj = {
-    product : q[0].product_id,
+    product : q[0].product_id ||0,
     page : page,
     count : 50,
     results : results
