@@ -37,9 +37,6 @@ const listallFormat = (q,page) => {
     }
     results.push(result);
   }
-  if(q[0] === undefined) {
-    return {}
-  }
 
   let listAllObj = {
     product : q[0].product_id,
