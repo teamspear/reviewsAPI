@@ -14,7 +14,7 @@ const pool = new Pool({
 });
 
 
-const listallFormat = (q,page) => {
+const listallFormat = (q,page,id) => {
   let results = [];
   for (let i = 0; i < q.length; i++) {
     let photos = [];
@@ -39,7 +39,7 @@ const listallFormat = (q,page) => {
   }
 
   let listAllObj = {
-    product : q[0].product_id,
+    product : id,
     page : page,
     count : 50,
     results : results
@@ -120,7 +120,7 @@ module.exports = {
                 OFFSET ${offset};`)
                 .then(results => {
                   client.set('all'+req.params.product_id, JSON.stringify(listallFormat(results.rows,page)), 'EX', 43200);
-                  res.send(listallFormat(results.rows,page))})
+                  res.send(listallFormat(results.rows,page,req.params.product_id))})
                 .catch((err)=>{console.log(err);res.send(err)});
   }})},
   allNOREDIS : (req,res) => {
