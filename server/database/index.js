@@ -118,9 +118,9 @@ module.exports = {
                 LIMIT ${count}
                 OFFSET ${offset};`)
                 .then(results => {
-                  if(!listallFormat(results.rows,page)){
+                  // if(!listallFormat(results.rows,page)){
                   client.set('all'+req.params.product_id, JSON.stringify(listallFormat(results.rows,page)), 'EX', 43200);
-                  res.send(listallFormat(results.rows,page))}})
+                  res.send(listallFormat(results.rows,page))})
                 .catch((err)=>res.send(err));
   }})},
   allNOREDIS : (req,res) => {
