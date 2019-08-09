@@ -122,10 +122,9 @@ module.exports = {
                 LIMIT ${count}
                 OFFSET ${offset};`)
                 .then(results => {
-                  // if(!listallFormat(results.rows,page)){
                   client.set('all'+req.params.product_id, JSON.stringify(listallFormat(results.rows,page)), 'EX', 43200);
                   res.send(listallFormat(results.rows,page))})
-                .catch((err)=>{console.log(err),res.send(err)});
+                .catch((err)=>{console.log(err);res.send(err)});
   }})},
   allNOREDIS : (req,res) => {
     let page = req.query.page || 0;
