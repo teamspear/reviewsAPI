@@ -118,7 +118,7 @@ module.exports = {
                 LIMIT ${count}
                 OFFSET ${offset};`)
                 .then(results => {
-                  client.set('all'+req.params.product_id, JSON.stringify(listallFormat(results.rows,page)), 'EX', 60);
+                  client.set('all'+req.params.product_id, JSON.stringify(listallFormat(results.rows,page)), 'EX', 43200);
                   res.send(listallFormat(results.rows,page))})
                 .catch(err=>console.log(err));
   }})},
@@ -166,7 +166,7 @@ module.exports = {
        GROUP BY characteristic_reviews.characteristic_id, characteristics.name;`,[req.params.product_id]
     )
     ]).then(results => {
-      client.set('meta'+req.params.product_id, JSON.stringify(metaFormat(results,req.params.product_id)), 'EX', 60);
+      client.set('meta'+req.params.product_id, JSON.stringify(metaFormat(results,req.params.product_id)), 'EX', 43200);
       res.send(metaFormat(results,req.params.product_id));})
   }})},
   helpful: (req, res) => {
