@@ -121,7 +121,7 @@ module.exports = {
                   if(!listallFormat(results.rows,page)){
                   client.set('all'+req.params.product_id, JSON.stringify(listallFormat(results.rows,page)), 'EX', 43200);
                   res.send(listallFormat(results.rows,page))}})
-                .catch(()=>res.sendStatus(500));
+                .catch((err)=>res.send(err));
   }})},
   allNOREDIS : (req,res) => {
     let page = req.query.page || 0;
