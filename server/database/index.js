@@ -38,7 +38,7 @@ const listallFormat = (q,page) => {
     results.push(result);
   }
   let listAllObj = {
-    product : q[0].product_id ||0,
+    product : q[0].product_id,
     page : page,
     count : 50,
     results : results
@@ -120,7 +120,7 @@ module.exports = {
                 .then(results => {
                   client.set('all'+req.params.product_id, JSON.stringify(listallFormat(results.rows,page)), 'EX', 43200);
                   res.send(listallFormat(results.rows,page))})
-                .catch(()=>res.sendStatus(500));
+                .catch((result)=>res.send(result));
   }})},
   allNOREDIS : (req,res) => {
     let page = req.query.page || 0;
