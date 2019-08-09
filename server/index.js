@@ -12,6 +12,10 @@ app.use(bodyParser.json());
 
 app.use(express.static('/server/loader'))
 
+app.get('/health', (req,res) => {
+  res.sendStatus(200);
+})
+
 app.get('/loaderio-05b219063ac478ba8c0227d17eb515ce/', (req,res) => {
   res.sendFile(__dirname+'/loader/loaderio-05b219063ac478ba8c0227d17eb515ce.txt');
 })
