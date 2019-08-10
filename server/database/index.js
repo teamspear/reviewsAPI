@@ -141,7 +141,7 @@ module.exports = {
                 LIMIT ${count}
                 OFFSET ${offset};`)
                 .then(results => {
-                  res.send(listallFormat(results.rows,page,req.pa.product_id))})
+                  res.send(listallFormat(results.rows,page,req.params.product_id))})
                 .catch((err)=>{console.log(err);res.sendStatus(500)});
   },
   meta: (req, res) => {
