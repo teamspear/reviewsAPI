@@ -6,7 +6,7 @@ var client = redis.createClient();
 const { Pool } = require("pg");
 
 const pool = new Pool({
-  host:'ec2-54-196-23-183.compute-1.amazonaws.com',
+  host:'localhost',
   user: 'tom',
   password:'password',
   database: 'postgres',
@@ -121,7 +121,7 @@ module.exports = {
                 .then(results => {
                   client.set('all'+req.params.product_id, JSON.stringify(listallFormat(results.rows,page)), 'EX', 43200);
                   res.send(listallFormat(results.rows,page,req.params.product_id))})
-                .catch((err)=>{console.log(err); res.sendStatus(500)});
+                .catch((err)=>console.log(err))
   }})},
   allNOREDIS : (req,res) => {
     let page = req.query.page || 0;
