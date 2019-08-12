@@ -6,8 +6,8 @@ var client = redis.createClient();
 const { Pool } = require("pg");
 
 const pool = new Pool({
-  host:'localhost',
-  user: 'tom',
+  host:'sdc-780775759.us-east-1.elb.amazonaws.com',
+  user: 'post',
   password:'password',
   database: 'postgres',
   port: 5432,
