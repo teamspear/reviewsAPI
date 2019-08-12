@@ -16,8 +16,8 @@ app.get('/health', (req,res) => {
   res.sendStatus(200);
 })
 
-app.get('/loaderio-2316e63562c40e08f51d5b0f4ce64db7/', (req,res) => {
-  res.sendFile(__dirname+'/loader/loaderio-2316e63562c40e08f51d5b0f4ce64db7.txt');
+app.get('/loaderio-9c25af20ce650a43d1b1d0b1c77833bc/', (req,res) => {
+  res.sendFile(__dirname+'/loader/loaderio-9c25af20ce650a43d1b1d0b1c77833bc.txt');
 })
 
 app.get('/reviews/:product_id/list', (req,res) => {
