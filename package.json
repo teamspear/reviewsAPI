@@ -22,7 +22,7 @@
     "express": "^4.17.1",
     "jest": "^24.8.0",
     "pg": "^7.12.0",
-    "redis": "^2.8.0"
+    "redis": "^3.1.1"
   },
   "devDependencies": {
     "frisby": "^2.1.2"
